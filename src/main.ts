@@ -30,22 +30,24 @@ async function bootstrap() {
   const swaggerConfig = configService.get<SwaggerConfig>('swagger');
 
   // Swagger Api
-  if (swaggerConfig.enabled) {
+  if (swaggerConfig!.enabled) {
     const options = new DocumentBuilder()
-      .setTitle(swaggerConfig.title || 'Nestjs')
-      .setDescription(swaggerConfig.description || 'The nestjs API description')
-      .setVersion(swaggerConfig.version || '1.0')
+      .setTitle(swaggerConfig!.title || 'Nestjs')
+      .setDescription(
+        swaggerConfig!.description || 'The nestjs API description'
+      )
+      .setVersion(swaggerConfig!.version || '1.0')
       .build();
     const document = SwaggerModule.createDocument(app, options);
 
-    SwaggerModule.setup(swaggerConfig.path || 'api', app, document);
+    SwaggerModule.setup(swaggerConfig!.path || 'api', app, document);
   }
 
   // Cors
-  if (corsConfig.enabled) {
+  if (corsConfig!.enabled) {
     app.enableCors();
   }
 
-  await app.listen(process.env.PORT || nestConfig.port || 3000);
+  await app.listen(process.env.PORT || nestConfig!.port || 3000);
 }
 bootstrap();

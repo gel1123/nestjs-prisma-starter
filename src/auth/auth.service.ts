@@ -47,7 +47,7 @@ export class AuthService {
       ) {
         throw new ConflictException(`Email ${payload.email} already used.`);
       }
-      throw new Error(e);
+      throw new Error(e as string);
     }
   }
 
@@ -72,13 +72,20 @@ export class AuthService {
     });
   }
 
-  validateUser(userId: string): Promise<User> {
-    return this.prisma.user.findUnique({ where: { id: userId } });
+  async validateUser(userId: string): Promise<User> {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new UnauthorizedException();
+    return user;
   }
 
-  getUserFromToken(token: string): Promise<User> {
-    const id = this.jwtService.decode(token)['userId'];
-    return this.prisma.user.findUnique({ where: { id } });
+  async getUserFromToken(token: string): Promise<User> {
+    const decoded = this.jwtService.decode(token);
+    if (!decoded) throw new UnauthorizedException();
+    if (typeof decoded === 'string') throw new UnauthorizedException();
+    const id = decoded['userId'];
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (!user) throw new UnauthorizedException();
+    return user;
   }
 
   generateTokens(payload: { userId: string }): Token {
@@ -96,7 +103,7 @@ export class AuthService {
     const securityConfig = this.configService.get<SecurityConfig>('security');
     return this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_SECRET'),
-      expiresIn: securityConfig.refreshIn,
+      expiresIn: securityConfig!.refreshIn,
     });
   }
 

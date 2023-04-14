@@ -25,9 +25,46 @@ Table Post {
   authorId String
 }
 
+Table Bbs {
+  id String [pk]
+  bbsName String [not null]
+  BbsThread BbsThread [not null]
+}
+
+Table BbsThread {
+  id String [pk]
+  bbsId String [not null]
+  threadName String [not null]
+  description String [not null]
+  bbs Bbs [not null]
+  BbsThreadResponse BbsThreadResponse [not null]
+}
+
+Table BbsThreadResponse {
+  id String [pk]
+  bbsThreadId String [not null]
+  userId String [not null]
+  postedAt DateTime [default: `now()`, not null]
+  content String [not null]
+  bbsThread BbsThread [not null]
+  user BbsUser [not null]
+}
+
+Table BbsUser {
+  id String [pk]
+  userName String [not null]
+  BbsThreadResponse BbsThreadResponse [not null]
+}
+
 Enum Role {
   ADMIN
   USER
 }
 
 Ref: Post.authorId > User.id
+
+Ref: BbsThread.bbsId > Bbs.id
+
+Ref: BbsThreadResponse.bbsThreadId > BbsThread.id
+
+Ref: BbsThreadResponse.userId > BbsUser.id

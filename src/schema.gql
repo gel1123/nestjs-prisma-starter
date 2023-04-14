@@ -11,9 +11,108 @@ type Auth {
   user: User!
 }
 
+"""掲示板"""
+type Bbs {
+  """掲示板のID"""
+  bbsId: ID!
+
+  """掲示板の名前"""
+  bbsName: String!
+
+  """掲示板に立てられたスレッドのリスト"""
+  threads(
+    """取得件数の上限"""
+    limit: Int
+  ): [BbsThread!]
+}
+
+"""スレッド"""
+type BbsThread {
+  """スレッドを立てた掲示板"""
+  bbs: Bbs!
+
+  """スレッドの説明"""
+  description: String!
+
+  """スレッドに投稿されたレスのリスト"""
+  responses: [BbsThreadResponse!]
+
+  """スレッドのID"""
+  threadId: ID!
+
+  """スレッド名"""
+  threadName: String!
+}
+
+"""レス"""
+type BbsThreadResponse {
+  """レスの内容"""
+  content: String!
+
+  """レスを投稿した日時"""
+  postedAt: DateTime!
+
+  """レスのID"""
+  responseId: ID!
+
+  """レスを投稿したスレッド"""
+  thread: BbsThread!
+
+  """レスを投稿したユーザー"""
+  user: BbsUser!
+}
+
+"""ユーザー"""
+type BbsUser {
+  """ユーザーが投稿したレスのリスト"""
+  responses: [BbsThreadResponse!]
+
+  """ユーザーのID"""
+  userId: ID!
+
+  """ユーザー名"""
+  userName: String!
+}
+
 input ChangePasswordInput {
   newPassword: String!
   oldPassword: String!
+}
+
+"""新しい掲示板を立てる"""
+input CreateBbsInput {
+  """掲示板の名前"""
+  bbsName: String!
+}
+
+"""新しいスレッドを立てる"""
+input CreateBbsThreadInput {
+  """スレッドを立てる掲示板のID"""
+  bbsId: String!
+
+  """スレッドの説明"""
+  description: String!
+
+  """スレッドの名前"""
+  threadName: String!
+}
+
+"""新しいレスを作成する"""
+input CreateBbsThreadResponseInput {
+  """レスの内容"""
+  content: String!
+
+  """レスを作成するスレッドのID"""
+  threadId: String!
+
+  """レスを作成するユーザーのID"""
+  userId: String!
+}
+
+"""新しいユーザーを作成する"""
+input CreateBbsUserInput {
+  """ユーザーの名前"""
+  userName: String!
 }
 
 input CreatePostInput {
@@ -38,6 +137,18 @@ input LoginInput {
 
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
+
+  """新しい掲示板を作成する"""
+  createBbs(input: CreateBbsInput!): Bbs!
+
+  """新しい掲示板ユーザーを作成する"""
+  createBbsThread(input: CreateBbsThreadInput!): BbsThread!
+
+  """新しい掲示板ユーザーを作成する"""
+  createBbsThreadResponse(input: CreateBbsThreadResponseInput!): BbsThreadResponse!
+
+  """新しい掲示板ユーザーを作成する"""
+  createBbsUser(input: CreateBbsUserInput!): BbsUser!
   createPost(data: CreatePostInput!): Post!
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
@@ -101,6 +212,29 @@ enum PostOrderField {
 }
 
 type Query {
+  """掲示板をIDで取得する"""
+  bbs(
+    """掲示板のID"""
+    id: String!
+  ): Bbs
+
+  """スレッドをIDで取得する"""
+  bbsThread(
+    """スレッドのID"""
+    id: ID!
+  ): BbsThread
+
+  """レスポンスをIDで取得する"""
+  bbsThreadResponse(
+    """レスポンスのID"""
+    id: ID!
+  ): BbsThreadResponse
+
+  """ユーザーをIDで取得する"""
+  bbsUser(
+    """ユーザーのID"""
+    id: ID!
+  ): BbsUser
   hello(name: String!): String!
   helloWorld: String!
   me: User!

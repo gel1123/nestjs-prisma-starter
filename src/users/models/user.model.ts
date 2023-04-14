@@ -19,7 +19,7 @@ registerEnumType(Role, {
 export class User extends BaseModel {
   @Field()
   @IsEmail()
-  email: string;
+  email!: string;
 
   @Field(() => String, { nullable: true })
   firstname?: string;
@@ -28,11 +28,11 @@ export class User extends BaseModel {
   lastname?: string;
 
   @Field(() => Role)
-  role: Role;
+  role!: Role;
 
   @Field(() => [Post], { nullable: true })
   posts?: [Post] | null;
 
   @HideField()
-  password: string;
+  password!: string;
 }

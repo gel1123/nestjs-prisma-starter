@@ -39,3 +39,38 @@ enum Role {
   ADMIN
   USER
 }
+
+model Bbs {
+  id      String @id @default(uuid()) @db.Uuid
+  bbsName String @db.VarChar(100)
+
+  BbsThread BbsThread[]
+}
+
+model BbsThread {
+  id          String @id @default(uuid()) @db.Uuid
+  bbsId       String @db.Uuid
+  threadName  String @db.VarChar(100)
+  description String @db.VarChar(2000)
+
+  bbs               Bbs                 @relation(fields: [bbsId], references: [id])
+  BbsThreadResponse BbsThreadResponse[]
+}
+
+model BbsThreadResponse {
+  id          String   @id @default(uuid()) @db.Uuid
+  bbsThreadId String   @db.Uuid
+  userId      String   @db.Uuid
+  postedAt    DateTime @default(now())
+  content     String   @db.VarChar(2000)
+
+  bbsThread BbsThread @relation(fields: [bbsThreadId], references: [id])
+  user      BbsUser   @relation(fields: [userId], references: [id])
+}
+
+model BbsUser {
+  id       String @id @default(uuid()) @db.Uuid
+  userName String @db.VarChar(100)
+
+  BbsThreadResponse BbsThreadResponse[]
+}

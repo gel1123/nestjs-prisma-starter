@@ -1,3 +1,17 @@
+# About
+
+このプロジェクトは、Nest.js + GraphQL + prisma のスターターキットに、ドキュメント生成の仕組みを追加したプロジェクトです。
+
+_________________________________
+
+# ドキュメント生成
+
+下記を参考。
+
+https://zenn.dev/fjsh/articles/nestjs-graphql-spectaql
+
+__________________________________
+
 # Instructions
 
 Starter template for 😻 [NestJS](https://nestjs.com/) and [Prisma](https://www.prisma.io/).
@@ -250,7 +264,7 @@ npm run prisma:generate:watch
 
 ## NestJS - Api Schema
 
-The [schema.graphql](./src/schema.graphql) is generated with [code first approach](https://docs.nestjs.com/graphql/quick-start#code-first) from the models, resolvers and input classes.
+The [schema.gql](./src/schema.gql) is generated with [code first approach](https://docs.nestjs.com/graphql/quick-start#code-first) from the models, resolvers and input classes.
 
 You can use [class-validator](https://docs.nestjs.com/techniques/validation) to validate your inputs and arguments.
 

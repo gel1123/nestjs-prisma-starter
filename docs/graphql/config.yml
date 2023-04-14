@@ -1,0 +1,11 @@
+introspection:
+  schemaFile:
+    - ./src/schema.gql
+
+servers:
+  - url: https://dev-api.example.com/graphql
+    description: GraphQL の API サーバーのエンドポイント
+
+info:
+  title: GraphQL の API サーバーのドキュメント
+  description: GraphQL の API サーバーのドキュメントです。

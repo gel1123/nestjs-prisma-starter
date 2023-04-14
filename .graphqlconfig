@@ -1,7 +1,7 @@
 {
   "projects": {
     "nest-prisma-starter": {
-      "schemaPath": "src/schema.graphql",
+      "schemaPath": "src/schema.gql",
       "extensions": {
         "endpoints": {
           "dev": "http://localhost:3000/graphql"

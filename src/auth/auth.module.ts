@@ -18,7 +18,7 @@ import { SecurityConfig } from 'src/common/configs/config.interface';
         return {
           secret: configService.get<string>('JWT_ACCESS_SECRET'),
           signOptions: {
-            expiresIn: securityConfig.expiresIn,
+            expiresIn: securityConfig!.expiresIn,
           },
         };
       },

@@ -11,16 +11,16 @@ export class GqlConfigService implements GqlOptionsFactory {
     const graphqlConfig = this.configService.get<GraphqlConfig>('graphql');
     return {
       // schema options
-      autoSchemaFile: graphqlConfig.schemaDestination || './src/schema.graphql',
-      sortSchema: graphqlConfig.sortSchema,
+      autoSchemaFile: graphqlConfig!.schemaDestination || './src/schema.gql',
+      sortSchema: graphqlConfig!.sortSchema,
       buildSchemaOptions: {
         numberScalarMode: 'integer',
       },
       // subscription
       installSubscriptionHandlers: true,
-      includeStacktraceInErrorResponses: graphqlConfig.debug,
-      playground: graphqlConfig.playgroundEnabled,
-      context: ({ req }) => ({ req }),
+      includeStacktraceInErrorResponses: graphqlConfig!.debug,
+      playground: graphqlConfig!.playgroundEnabled,
+      context: ({ req }: { req: unknown }) => ({ req }),
     };
   }
 }
